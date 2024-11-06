@@ -1,12 +1,19 @@
 #include <stdio.h>
 #include <stdlib.h>
-// #include <string.h>
-// #include <ctype.h>
+#include <string.h>
+#include <ctype.h>
+#include <unistd.h>
+
+#ifdef _WIN32
+    #define CLEAR "cls"
+#else
+    #define CLEAR "clear"
+#endif
 
 void validatePIN(int *pin, int *counter) {
     *counter = 0;
     while (*pin != 1111) {
-        system("cls");
+        system(CLEAR);
         (*counter)++;
         if (*counter == 3) {
             printf("Too many illegal PINs. Try later again.\n");
@@ -15,7 +22,7 @@ void validatePIN(int *pin, int *counter) {
         printf("***Welcome to Cal Poly's ATM****\nPlease enter your PIN:");
         scanf("%d", pin);
     }
-    system("cls");
+    system(CLEAR);
 }
 
 void showMainMenu() {
@@ -39,13 +46,13 @@ void transferFromCheckingToSavings(double *checking, double *savings) {
         printf("Transaction not completed\n");
         printf("Current balance is: %.2lf\n", *checking);       
         sleep(3);
-        system("cls");
+        system(CLEAR);
     } else {
         *checking -= transferAmount;
         *savings += transferAmount;
         printf("Transaction completed\n");
         sleep(3);
-        system("cls");
+        system(CLEAR);
     }
 }
 
@@ -57,20 +64,20 @@ void transferFromSavingsToChecking(double *checking, double *savings) {
         printf("Transaction not completed\n");
         printf("Current balance is: %.2lf\n", *savings);
         sleep(3);
-        system("cls");
+        system(CLEAR);
     } else {
         *savings -= transferAmount;
         *checking += transferAmount;
         printf("Transaction completed\n");
         sleep(3);
-        system("cls");
+        system(CLEAR);
     }
 }
 
 void showBalance(double balance, const char *accountType) {
     printf("Current balance in %s account is: %.2lf\n", accountType, balance);
     sleep(3);
-    system("cls");
+    system(CLEAR);
 }
 
 void withdrawCash(double *checking, double *savings) {
@@ -85,7 +92,7 @@ void withdrawCash(double *checking, double *savings) {
     if (strcmp(accountType, "checking") != 0 && strcmp(accountType, "saving") != 0) {
         printf("Invalid account type\n");
         sleep(3);
-        system("cls");
+        system(CLEAR);
         return;
     }
 
@@ -98,24 +105,24 @@ void withdrawCash(double *checking, double *savings) {
             printf("Transaction not completed\n");
             printf("Current balance is: %.2lf\n", *checking);
             sleep(3);
-            system("cls");
+            system(CLEAR);
         } else {
             *checking -= withdrawAmount;
             printf("Transaction completed\n");
             sleep(3);
-            system("cls");
+            system(CLEAR);
         }
     } else if (strcmp(accountType, "saving") == 0) {
         if (withdrawAmount > *savings) {
             printf("Transaction not completed\n");
             printf("Current balance is: %.2lf\n", *savings);
             sleep(3);
-            system("cls");
+            system(CLEAR);
         } else {
             *savings -= withdrawAmount;
             printf("Transaction completed\n");
             sleep(3);
-            system("cls");
+            system(CLEAR);
         }
     }
 }
@@ -125,7 +132,7 @@ int main() {
     double initialBalanceChecking = 1000.00;
     double initialBalanceSavings = 1000.00;
 
-    system("cls");
+    system(CLEAR);
 
     printf("***Welcome to Cal Poly's ATM****\nPlease enter your PIN:");
     scanf("%d", &pin);
@@ -137,7 +144,7 @@ int main() {
         scanf("%d", &selection);
 
         if (selection < 1 || selection > 6) {
-            system("cls");
+            system(CLEAR);
             continue;
         }
 
