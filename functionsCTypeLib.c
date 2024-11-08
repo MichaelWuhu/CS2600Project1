@@ -26,6 +26,16 @@ int main()
         return 1;
     }
 
+    // Check if the file is empty
+    fseek(fp, 0, SEEK_END);
+    if (ftell(fp) == 0)
+    {
+        printf("The file is empty\n");
+        fclose(fp);
+        return 1;
+    }
+    rewind(fp);
+
     outputFile = fopen("output.txt", "w");
     if (outputFile == NULL)
     {
@@ -70,6 +80,14 @@ int main()
             punctuationCounter++;
         }
         totalCharacterCounter++;
+    }
+
+    if (totalCharacterCounter == 0)
+    {
+        printf("No characters to process\n");
+        fclose(fp);
+        fclose(outputFile);
+        return 1;
     }
 
     // Calculate percentages
