@@ -5,17 +5,20 @@
 #include <unistd.h>
 
 #ifdef _WIN32
-    #define CLEAR "cls"
+#define CLEAR "cls"
 #else
-    #define CLEAR "clear"
+#define CLEAR "clear"
 #endif
 
-void validatePIN(int *pin, int *counter) {
+void validatePIN(int *pin, int *counter)
+{
     *counter = 0;
-    while (*pin != 1111) {
+    while (*pin != 1111)
+    {
         system(CLEAR);
         (*counter)++;
-        if (*counter == 3) {
+        if (*counter == 3)
+        {
             printf("Too many illegal PINs. Try later again.\n");
             exit(0);
         }
@@ -25,7 +28,8 @@ void validatePIN(int *pin, int *counter) {
     system(CLEAR);
 }
 
-void showMainMenu() {
+void showMainMenu()
+{
     printf(
         "***Welcome to Cal Poly's ATM****\n"
         "(1) Transfer from checking account to savings account\n"
@@ -34,65 +38,70 @@ void showMainMenu() {
         "(4) Checking account balance\n"
         "(5) Withdraw Cash from either account\n"
         "(6) Exit\n"
-        "==> Please select option (1-6):\n"
-    );
+        "==> Please select option (1-6):\n");
 }
 
-void transferFromCheckingToSavings(double *checking, double *savings) {
+void transferFromCheckingToSavings(double *checking, double *savings)
+{
     double transferAmount;
     printf("Enter the amount you want to transfer: \n");
     scanf("%lf", &transferAmount);
-    if (transferAmount > *checking) {
-        printf("Transaction not completed\n");
-        printf("Current balance is: %.2lf\n", *checking);       
-        sleep(3);
+    if (transferAmount > *checking)
+    {
         system(CLEAR);
-    } else {
+        printf("Transaction not completed\n");
+        printf("Current balance is: %.2lf\n\n", *checking);
+    }
+    else
+    {
+        system(CLEAR);
         *checking -= transferAmount;
         *savings += transferAmount;
-        printf("Transaction completed\n");
-        sleep(3);
-        system(CLEAR);
+        printf("Transaction completed\n\n");
     }
 }
 
-void transferFromSavingsToChecking(double *checking, double *savings) {
+void transferFromSavingsToChecking(double *checking, double *savings)
+{
     double transferAmount;
     printf("Enter the amount you want to transfer: \n");
     scanf("%lf", &transferAmount);
-    if (transferAmount > *savings) {
-        printf("Transaction not completed\n");
-        printf("Current balance is: %.2lf\n", *savings);
-        sleep(3);
+    if (transferAmount > *savings)
+    {
         system(CLEAR);
-    } else {
+        printf("Transaction not completed\n");
+        printf("Current balance is: %.2lf\n\n", *savings);
+    }
+    else
+    {
         *savings -= transferAmount;
         *checking += transferAmount;
-        printf("Transaction completed\n");
-        sleep(3);
         system(CLEAR);
+        printf("Transaction completed\n\n");
     }
 }
 
-void showBalance(double balance, const char *accountType) {
-    printf("Current balance in %s account is: %.2lf\n", accountType, balance);
-    sleep(3);
+void showBalance(double balance, const char *accountType)
+{
     system(CLEAR);
+    printf("Current balance in %s account is: %.2lf\n\n", accountType, balance);
 }
 
-void withdrawCash(double *checking, double *savings) {
+void withdrawCash(double *checking, double *savings)
+{
     char accountType[50];
     printf("Which account do you want to withdraw from? (Checking or Saving)\n");
     scanf("%s", accountType);
-    
-    for (int i = 0; accountType[i]; i++) {
+
+    for (int i = 0; accountType[i]; i++)
+    {
         accountType[i] = tolower(accountType[i]);
     }
 
-    if (strcmp(accountType, "checking") != 0 && strcmp(accountType, "saving") != 0) {
-        printf("Invalid account type\n");
-        sleep(3);
+    if (strcmp(accountType, "checking") != 0 && strcmp(accountType, "saving") != 0)
+    {
         system(CLEAR);
+        printf("Invalid account type\n\n");
         return;
     }
 
@@ -100,34 +109,40 @@ void withdrawCash(double *checking, double *savings) {
     printf("Enter the amount you want to withdraw: \n");
     scanf("%lf", &withdrawAmount);
 
-    if (strcmp(accountType, "checking") == 0) {
-        if (withdrawAmount > *checking) {
+    if (strcmp(accountType, "checking") == 0)
+    {
+        if (withdrawAmount > *checking)
+        {
+            system(CLEAR);
             printf("Transaction not completed\n");
-            printf("Current balance is: %.2lf\n", *checking);
-            sleep(3);
-            system(CLEAR);
-        } else {
-            *checking -= withdrawAmount;
-            printf("Transaction completed\n");
-            sleep(3);
-            system(CLEAR);
+            printf("Current balance is: %.2lf\n\n", *checking);
         }
-    } else if (strcmp(accountType, "saving") == 0) {
-        if (withdrawAmount > *savings) {
+        else
+        {
+            *checking -= withdrawAmount;
+            system(CLEAR);
+            printf("Transaction completed\n\n");
+        }
+    }
+    else if (strcmp(accountType, "saving") == 0)
+    {
+        if (withdrawAmount > *savings)
+        {
+            system(CLEAR);
             printf("Transaction not completed\n");
-            printf("Current balance is: %.2lf\n", *savings);
-            sleep(3);
-            system(CLEAR);
-        } else {
+            printf("Current balance is: %.2lf\n\n", *savings);
+        }
+        else
+        {
             *savings -= withdrawAmount;
-            printf("Transaction completed\n");
-            sleep(3);
             system(CLEAR);
+            printf("Transaction completed\n\n");
         }
     }
 }
 
-int main() {
+int main()
+{
     int pin, counter = 0, selection = 0;
     double initialBalanceChecking = 1000.00;
     double initialBalanceSavings = 1000.00;
@@ -139,24 +154,35 @@ int main() {
 
     validatePIN(&pin, &counter);
 
-    while (selection != 6) {
+    while (selection != 6)
+    {
         showMainMenu();
         scanf("%d", &selection);
 
-        if (selection < 1 || selection > 6) {
+        if (selection < 1 || selection > 6)
+        {
             system(CLEAR);
             continue;
         }
 
-        if (selection == 1) {
+        if (selection == 1)
+        {
             transferFromCheckingToSavings(&initialBalanceChecking, &initialBalanceSavings);
-        } else if (selection == 2) {
+        }
+        else if (selection == 2)
+        {
             transferFromSavingsToChecking(&initialBalanceChecking, &initialBalanceSavings);
-        } else if (selection == 3) {
+        }
+        else if (selection == 3)
+        {
             showBalance(initialBalanceSavings, "savings");
-        } else if (selection == 4) {
+        }
+        else if (selection == 4)
+        {
             showBalance(initialBalanceChecking, "checking");
-        } else if (selection == 5) {
+        }
+        else if (selection == 5)
+        {
             withdrawCash(&initialBalanceChecking, &initialBalanceSavings);
         }
     }
